@@ -1,7 +1,7 @@
    clear all
    clc
    
-    k=10; 
+    k=100; 
     L=1;
     Uo=1;
     v=1;
@@ -38,7 +38,7 @@
         U(s) = (g(s)-(c(s)*U(s+1)))/(o(s));
     end
     
-% Exact solution for case 1 (k=10)      
+% Exact solution for case 1 (k=100)      
    
     for i=1:N
         x(i)=i*h;
@@ -47,7 +47,7 @@
 
 % new start for (2N)  
  
-    k=10; 
+    k=100; 
     L=1;
     Uo=1;
     v=1;
@@ -85,7 +85,7 @@
     end
    
 
-% Exact solution for case 1 (k=10)      
+% Exact solution for case 1 (k=100)      
    
     for p=1:N1
         x1(p)=p*h2;
