@@ -1,7 +1,7 @@
-   clear all
+    clear all
    clc
    
-    k=100; 
+    k=10; 
     L=1;
     Uo=1;
     v=1;
@@ -10,20 +10,22 @@
     h=L/(N+1);
 
     a= -(2+k^2*h^2)*ones(1,N);
+    a(1)= 1;
     
     f = (h^2*A)*ones(1,N);
-    f(1) = (h^2*A)-Uo;
-   
+    f(1) = (h*v)+Uo;
+       
     b = ones(1,N);
+    b(1)=-1;
     
     c = ones(1,N-1);
-    c(N)=0
+    c(1)= 0;
     
-    o = zeros(1,N)
-    o(1) = a(1)
+    o = zeros(1,N);
+    o(1) = a(1);
     
     g = zeros(1,N);
-    g(1)= f(1)
+    g(1)= f(1);
    
     for j= 2:N
         
@@ -38,32 +40,34 @@
         U(s) = (g(s)-(c(s)*U(s+1)))/(o(s));
     end
     
-% Exact solution for case 1 (k=100)      
+% Exact solution for case 1 (k=10)      
    
     for i=1:N
         x(i)=i*h;
     end
-    UE = (((sinh(k*(L-x))+sinh(k*x)-1))/(sinh(k*L)))*A/k^2 + (sinh(k*(L-x)))/(sinh(k*L));
+    UE = (((cosh(k*x)-1))/(cosh(k*L))-1)*A/k^2 - (v/k)*(sinh(k*(L-x)))/(cosh(k*L));
 
 % new start for (2N)  
  
-    k=100; 
+    k=10; 
     L=1;
     Uo=1;
     v=1;
     A=1;
     N1=N*2;
     h2=L/(N1+1);
-
-    a= -(2+k^2*h^2)*ones(1,N1);
     
-    f = (h^2*A)*ones(1,N1);
-    f(1) = (h^2*A)-Uo;
-   
+     a= -(2+k^2*h2^2)*ones(1,N1);
+    a(1)= 1;
+    
+    f = (h2^2*A)*ones(1,N1);
+    f(1) = (h2*v)+Uo;
+       
     b = ones(1,N1);
+    b(1)=-1;
     
     c = ones(1,N1-1);
-    c(N1)=0;
+    c(1)= 0;
     
     o = zeros(1,N1);
     o(1) = a(1);
@@ -85,10 +89,20 @@
     end
    
 
-% Exact solution for case 1 (k=100)      
+% Exact solution for case 1 (k=10)      
    
     for p=1:N1
         x1(p)=p*h2;
     end
+     UE2= (((cosh(k*x1)-1))/(cosh(k*L))-1)*A/k^2 - (v/k)*(sinh(k*(L-x1)))/(cosh(k*L));
     
-    UE2=(((sinh(k*(L-x1))+sinh(k*x1)-1))/(sinh(k*L)))*A/k^2 + (sinh(k*(L-x1)))/(sinh(k*L)); 
+   
+% Error Calculation
+
+    E= abs(UE-U);
+    Emax= max(E);
+    
+    E2= abs(UE2-U2);
+    E1max= max(E2); 
+    
+    order = abs(log(Emax/E1max)/log(2));
